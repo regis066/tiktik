@@ -21,6 +21,12 @@ export const post = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'postedBy',
+      title: 'Posted By',
+      type: 'reference',
+      to: [{type: 'user'}],
+    }),
+    defineField({
       name: 'likes',
       title: 'Likes',
       type: 'array',
@@ -41,10 +47,10 @@ export const post = defineType({
         },
       ],
     }),
-      defineField({
-          name: "topic",
-          title: "Topic",
-          type: "string"
-    })
+    defineField({
+      name: 'topic',
+      title: 'Topic',
+      type: 'string',
+    }),
   ],
 })
