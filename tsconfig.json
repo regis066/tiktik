@@ -23,5 +23,5 @@
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"],
-  "content": ["./pages/**/*.{html,js}", "./components/**/*.{html,js}"]
+  "content": ["./pages/**/*.{html,js}", "./components/**/*.{html,js}","./app/**/*.{js,ts,jsx,tsx,mdx}"]
 }
