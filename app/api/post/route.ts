@@ -1,9 +1,10 @@
+import { client } from "@/utils/client";
 import { allPostsQuery } from "@/utils/queries";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(req: Request, res: Response) {
+  const query = allPostsQuery();
+  const data = await client.fetch(query);
 
-
-    const query = allPostsQuery();
-    return NextResponse.json({ name: "Posts request" });
+  return NextResponse.json(data);
 }
