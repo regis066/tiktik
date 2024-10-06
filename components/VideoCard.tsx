@@ -35,8 +35,8 @@ const VideoCard = ({ post }: IProps) => {
     };
 
   return (
-    <div className="flex flex-col border-b-2  border-gray-200 pb-6">
-      <div className="flex">
+    <div className="flex flex-col border-b-2 border-gray-200 pb-6">
+      <div className="flex items-center">
         <div className="flex gap-3 p-2 cursor-pointer font-semibold rounded">
           <div className="md-w-16 md:h-16 w-10 h-10">
             <Link href="/">
@@ -76,7 +76,7 @@ const VideoCard = ({ post }: IProps) => {
             <video
               ref={videoRef}
               src={post.video.asset.url}
-              className="lg:w[600px] h-[300px] md:h-[400px lg:h-[530px] w-[200px] rounded-2xl cursor-pointer bg-gray-100"
+              className="lg:w-[600px] h-[300px] md:h-[400px lg:h-[530px] w-[200px] rounded-2xl cursor-pointer bg-gray-100"
             ></video>
           </Link>
 
@@ -93,15 +93,11 @@ const VideoCard = ({ post }: IProps) => {
               )}
 
               {isVideoMuted ? (
-                <button
-                  onClick={onMuteToggle}
-                >
+                <button onClick={onMuteToggle}>
                   <HiVolumeOff className="text-black text-2xl lg:text-4xl" />
                 </button>
               ) : (
-                <button
-                  onClick={onMuteToggle}
-                >
+                <button onClick={onMuteToggle}>
                   <HiVolumeUp className="text-black text-2xl lg:text-4xl" />
                 </button>
               )}
