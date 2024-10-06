@@ -1,10 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { GoogleLogin } from "@react-oauth/google";
 import { ImCancelCircle } from "react-icons/im";
 import { AiFillHome, AiOutlineMenu } from "react-icons/ai";
 import Discover from "./Discover";
@@ -38,24 +35,6 @@ const Sidebar = () => {
               </div>
             </Link>
           </div>
-          {!userProfile && (
-            <div className="px-2 py-4 hidden xl:block">
-              <p className="text-gray-400">
-                Log in to like and comment on videos
-              </p>
-              <GoogleLogin
-                onSuccess={(CredentialResponse) => {
-                  console.log(CredentialResponse);
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-                text="signin_with"
-                logo_alignment="center"
-                useOneTap
-              />
-            </div>
-          )}
           <Discover />
           <SuggestedAccounts />
           <Footer />
