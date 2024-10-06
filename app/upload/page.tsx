@@ -1,7 +1,11 @@
 "use client";
 
+import useAuthStore from "@/store/authStore";
 import { client } from "@/utils/client";
+import { topics } from "@/utils/constants";
 import { SanityAssetDocument } from "@sanity/client";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 
@@ -10,7 +14,14 @@ const Upload = () => {
   const [videoAsset, setVideoAsset] = useState<
     SanityAssetDocument | undefined
   >();
-  const [invalidFileType, setInvalidFileType] = useState(true);
+  const [invalidFileType, setInvalidFileType] = useState(false);
+  const [caption, setCaption] = useState("");
+  const [category, setCategory] = useState(topics[0].name);
+  const [savingPost, setSavingPost] = useState(false);
+
+  const { userProfile }: { userProfile: any } = useAuthStore();
+  const router = useRouter();
+
 
   const uploadVideo = (e: any) => {
     const selectedFile = e.target.files[0];
@@ -31,9 +42,36 @@ const Upload = () => {
       setInvalidFileType(true);
     }
   };
+
+  const handlePost = async () => {
+    setSavingPost(true);
+
+    if (caption && category && videoAsset) {
+      const document = {
+        _type: "post",
+        caption,
+        video: {
+          _type: "file",
+          asset: {
+            _type: "reference",
+            _ref: videoAsset?._id,
+          },
+        },
+        userId: userProfile?._id,
+        postedBy: {
+          _type: "reference",
+          _ref: userProfile?._id,
+        },
+        topic: category
+      };
+
+      await axios.post("http://localhost:3000/api/post", document);
+      router.push('/');
+    }
+  };
   return (
-    <div className="flex w-full h-full">
-      <div className="bg-white rounded-lg">
+    <div className="flex w-full h-full absolute left-0 top-[60px] mb-10 pt-10 lg:pt-20 bg-[#F8F8F8] justify-center">
+      <div className="bg-white rounded-lg xl:h-[80vh] w-[60%] flex gap-6 items-center flex-wrap p-14 pt-6 justify-between">
         <div>
           <div>
             <p className="text-2xl font-bold">Upload Video</p>
@@ -45,7 +83,7 @@ const Upload = () => {
             {isLoading ? (
               <p>Uploading...</p>
             ) : (
-              <div>
+              <div className="relative bottom-8">
                 {videoAsset ? (
                   <div>
                     <video
@@ -91,10 +129,44 @@ const Upload = () => {
               </p>
             )}
           </div>
+        </div>
+        <div>
+          <div className="flex flex-col gap-3  pb-10">
+            <label className="text-md font-medium">Caption</label>
+            <input
+              type="text"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              className="rounded outline-none text-md border-2 border-gray-200 p-2"
+            />
 
-          <div>
-            <div className="flex flex-col gap-3  pb-10">
-              <label className="text-md font-medium">Captio</label>
+            <label className="text-md font-medium">Choose a Category</label>
+            <select
+              name="topics"
+              id="topics"
+              className="outline-none border-2 border-gray-200 text-md capitalize lg:p-4 p-2 rounded cursor-pointer"
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              {topics.map((topic) => (
+                <option key={topic.name}>{topic.name}</option>
+              ))}
+            </select>
+
+            <div className="flex gap-6 mt-10 ">
+              <button
+                onClick={() => {}}
+                type="button"
+                className="border-gray-300 border-2 text-md font-medium p-2 rounded w-28 lg:w-44 outline-none"
+              >
+                Discard
+              </button>
+              <button
+                onClick={handlePost}
+                type="button"
+                className="bg-[#F51997] text-m text-white font-medium p-2 rounded w-28 lg:w-44 outline-none"
+              >
+                Post
+              </button>
             </div>
           </div>
         </div>
